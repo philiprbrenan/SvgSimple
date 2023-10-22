@@ -1,0 +1,30 @@
+# Test 2023-10-22 at 01:01:52
+
+name: Test
+
+on:
+  push
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: 'main'
+
+    - uses: actions/checkout@v3
+      with:
+        repository: philiprbrenan/DataTableText
+        path: dtt
+
+    - name: Cpan
+      run:  sudo cpan install -T Data::Dump
+    - name: Ubuntu update
+      run:  sudo apt update
+
+    - name: Test Perl
+      run:
+        perl -Ilib Svg/Simple.pm
