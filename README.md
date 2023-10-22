@@ -8,48 +8,63 @@ The following sections describe the methods in each functional area of this [mod
 
 # Constructors
 
-Construct a new SVG object
+Construct and print a new SVG object.
 
-## new(%options)
+## new()
 
-New SVG
-
-       Parameter  Description
-    1  %options   Options
+Create a new SVG object.
 
 **Example:**
 
-      my $s = new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+      my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-      $s->text  ( x=>10,  y=>10, cdata =>"Hello World", font_size=>4);
-      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent");
-      my $S = $s->print;
-      owf fpe(qw(svg [test](https://en.wikipedia.org/wiki/Software_testing) svg)), $S;
-      ok $S =~ m(circle)
+    
+      $s->text(x=>10, y=>10, z_index=>1,
+        cdata             =>"Hello World",
+        text_anchor       =>"middle",
+        alignment_baseline=>"middle",
+        font_size         => 4,
+        font_family       =>"Arial",
+        fill              =>"black");
+    
+      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+      owf fpe(qw(svg [test](https://en.wikipedia.org/wiki/Software_testing) svg)), $s->print;
+      ok $s->print =~ m(circle)
     
 
 ## print($svg, %options)
 
-Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) [string](https://en.wikipedia.org/wiki/String_(computer_science)) 
+Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) [string](https://en.wikipedia.org/wiki/String_(computer_science)). 
        Parameter  Description
     1  $svg       Svg
-    2  %options   Options
+    2  %options   Svg options
 
 **Example:**
 
-      my $s = new();
-      $s->text  ( x=>10,  y=>10, cdata =>"Hello World", font_size=>4);
-      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent");
+      my $s = Svg::Simple::new();
     
-      my $S = $s->print;  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+      $s->text(x=>10, y=>10, z_index=>1,
+        cdata             =>"Hello World",
+        text_anchor       =>"middle",
+        alignment_baseline=>"middle",
+        font_size         => 4,
+        font_family       =>"Arial",
+        fill              =>"black");
+    
+      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+    
+      owf fpe(qw(svg [test](https://en.wikipedia.org/wiki/Software_testing) svg)), $s->print;  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-      owf fpe(qw(svg [test](https://en.wikipedia.org/wiki/Software_testing) svg)), $S;
-      ok $S =~ m(circle)
     
+      ok $s->print =~ m(circle)  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+    
+
+# Private Methods
 
 ## AUTOLOAD($svg, %options)
 
-Allow methods with constant parameters to be called as **method\_p1\_p2**...(variable parameters) whenever it is easier to type underscores than (qw()).
+SVG methods.
 
        Parameter  Description
     1  $svg       Svg object
@@ -57,11 +72,11 @@ Allow methods with constant parameters to be called as **method\_p1\_p2**...(var
 
 # Index
 
-1 [AUTOLOAD](#autoload) - Allow methods with constant parameters to be called as **method\_p1\_p2**.
+1 [AUTOLOAD](#autoload) - SVG methods.
 
-2 [new](#new) - New SVG
+2 [new](#new) - Create a new SVG object.
 
-3 [print](#print) - Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) [string](https://en.wikipedia.org/wiki/String_(computer_science)) 
+3 [print](#print) - Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) [string](https://en.wikipedia.org/wiki/String_(computer_science)). 
 # Installation
 
 This [module](https://en.wikipedia.org/wiki/Modular_programming) is written in 100% Pure Perl and, thus, it is easy to read,
@@ -86,6 +101,6 @@ under the same terms as Perl itself.
 
 Hey! **The above document had some coding errors, which are explained below:**
 
-- Around line 29:
+- Around line 27:
 
     Non-ASCII character seen before =encoding in '𝗘𝘅𝗮𝗺𝗽𝗹𝗲'. Assuming CP1252
