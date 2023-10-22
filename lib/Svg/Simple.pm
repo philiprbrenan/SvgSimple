@@ -17,11 +17,13 @@ makeDieConfess;
 
 #D1 Constructors                                                                # Construct and print a new SVG object.
 
-sub new()                                                                       # Create a new SVG object.
- {genHash(__PACKAGE__,
+sub new(%)                                                                      # Create a new SVG object.
+ {my (%options) = @_;                                                           # Svg options
+  genHash(__PACKAGE__,
     code=>[],                                                                   # Svg code generated
     mX=>0,                                                                      # Maximum X coordinate encountered
     mY=>0,                                                                      # Maximum Y coordinate encountered
+    defaults=>$options{defaults},                                               # Default attributes to be applied to each statement
   );
  }
 
@@ -46,8 +48,12 @@ sub AUTOLOAD($%)                                                                
  {my ($svg, %options) = @_;                                                     # Svg object, options
   my @s;
 
-  for my $k(sort keys %options)                                                 # Process each option
-   {my $v = $options{$k};
+  my %o;
+     %o = ($svg->defaults->%*) if $svg->defaults;                               # Add any default values
+     %o = (%o, %options);                                                       # Add supplied options
+
+  for my $k(sort keys %o)                                                       # Process each option
+   {my $v = $o{$k};
     my $K = $k =~ s(_) (-)r;                                                    # Underscore _ in option names becomes hyphen -
     next if $k =~ m(\Acdata\Z)i;
     push @s, qq($K="$v");
@@ -58,7 +64,7 @@ sub AUTOLOAD($%)                                                                
   eval                                                                          # Maximum extent of the Svg
    {my $X = $svg->mY;
     my $Y = $svg->mY;
-    if ($n =~ m(\Arectangle\Z)i)
+    if ($n =~ m(\Arect\Z)i)
      {$X = max $X, $options{x}+$options{width};
       $Y = max $Y, $options{y}+$options{height};
      }
