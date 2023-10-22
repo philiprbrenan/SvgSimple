@@ -10,9 +10,12 @@ The following sections describe the methods in each functional area of this [mod
 
 Construct and print a new SVG object.
 
-## new()
+## new(%options)
 
 Create a new SVG object.
+
+       Parameter  Description
+    1  %options   Svg options
 
 **Example:**
 
@@ -101,6 +104,6 @@ under the same terms as Perl itself.
 
 Hey! **The above document had some coding errors, which are explained below:**
 
-- Around line 27:
+- Around line 29:
 
     Non-ASCII character seen before =encoding in '𝗘𝘅𝗮𝗺𝗽𝗹𝗲'. Assuming CP1252
