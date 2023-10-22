@@ -20,7 +20,8 @@ Svg::Simple makes it easy to write [Scalar Vector Graphics](https://en.wikipedia
     say STDERR $s->print;
 
 <div>
-    To get: <img src="image.png" alt="Embedded Image">
+    <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/svg/test.svg">
+    ![Sample Svg Image](https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/svg/test.svg)
 </div>
 
 A **-** in an [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) keyword can be replaced with **\_** to reduce line noise.
