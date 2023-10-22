@@ -19,6 +19,10 @@ Svg::Simple makes it easy to write [Scalar Vector Graphics](https://en.wikipedia
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
     say STDERR $s->print;
 
+<div>
+    To get: <img src="image.png" alt="Embedded Image">
+</div>
+
 A **-** in an [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) keyword can be replaced with **\_** to reduce line noise.
 
 The [print](https://metacpan.org/pod/print) method automatically creates an **svg** to wrap around all the [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) statements specified.  The image so created will fill all of the available
