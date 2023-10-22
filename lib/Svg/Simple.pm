@@ -303,6 +303,6 @@ if (1) {                                                                        
     fill              =>"black");
 
   $s->circle(cx=>8, cy=>8, r=>7, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-  owf fpe(qw(svg test svg)), $s->print;
+  my $f = owf fpe(qw(svg test svg)), $s->print;
   ok $s->print =~ m(circle)
  }
