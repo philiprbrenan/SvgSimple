@@ -1,4 +1,4 @@
-# Test 2023-10-22 at 06:21:29
+# Test 2023-10-22 at 06:23:35
 
 name: Test
 
@@ -25,9 +25,12 @@ jobs:
     - name: Ubuntu update
       run:  sudo apt update
 
-    - name: Tree
+    - name: Install Tree
       run:
         sudo apt install tree
+
+    - name: Tree
+      run:
         tree
 
     - name: Test Perl
