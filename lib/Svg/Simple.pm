@@ -1,6 +1,6 @@
 #!/usr/bin/perl -I/home/phil/perl/cpan/DataTableText/lib/
 #-------------------------------------------------------------------------------
-# SVG overlay to facilitate writing SVG documents using Perl
+# Write SVG using Perl syntax.
 # Philip R Brenan at gmail dot com, Appa Apps Ltd Inc., 2017-2020
 #-------------------------------------------------------------------------------
 # podDocumentation
@@ -15,22 +15,21 @@ use Data::Table::Text qw(:all);
 
 makeDieConfess;
 
-#D1 Constructors                                                                # Construct a new SVG object
+#D1 Constructors                                                                # Construct and print a new SVG object.
 
-sub new(%)                                                                      # New SVG
- {my (%options) = @_;                                                           # Options
-  genHash(__PACKAGE__,
+sub new()                                                                       # Create a new SVG object.
+ {genHash(__PACKAGE__,
     code=>[],                                                                   # Svg code generated
     mX=>0,                                                                      # Maximum X coordinate encountered
     mY=>0,                                                                      # Maximum Y coordinate encountered
   );
  }
 
-sub print($%)                                                                   # Print resulting svg string
- {my ($svg, %options) = @_;                                                     # Svg, Options
+sub print($%)                                                                   # Print resulting svg string.
+ {my ($svg, %options) = @_;                                                     # Svg, svg options
   my $s = join "\n", $svg->code->@*;
-  my $X = $svg->mX;                                                             # Maximum extent
-  my $Y = $svg->mY;
+  my $X = $options{width}   // $svg->mX;                                        # Maximum width
+  my $Y = $options{gheight} // $svg->mY;                                        # Maximum height
   my $e = q(</svg>);
   <<END;
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -43,13 +42,13 @@ END
 
 our $AUTOLOAD;                                                                  # The method to be autoloaded appears here
 
-sub AUTOLOAD($%)                                                                # Allow methods with constant parameters to be called as B<method_p1_p2>...(variable parameters) whenever it is easier to type underscores than (qw()).
+sub AUTOLOAD($%)                                                                #P SVG methods.
  {my ($svg, %options) = @_;                                                     # Svg object, options
   my @s;
 
   for my $k(sort keys %options)                                                 # Process each option
    {my $v = $options{$k};
-    my $K = $k =~ s(_) (-)r;                                                    # _ in option names becomes -
+    my $K = $k =~ s(_) (-)r;                                                    # Underscore _ in option names becomes hyphen -
     next if $k =~ m(\Acdata\Z)i;
     push @s, qq($K="$v");
    }
@@ -107,9 +106,43 @@ use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 
 =head1 Name
 
-Svg::Better - SVG overlay to facilitate writing SVG documents using Perl
+Svg::Simple - SVG overlay to facilitate writing SVG documents using Perl
 
 =head1 Synopsis
+
+Svg::Simple makes it easy to write svg using Perl syntax as in:
+
+  my $s = Svg::Simple::new();
+
+  $s->text(x=>10, y=>10, z_index=>1,
+    cdata             =>"Hello World",
+    text_anchor       =>"middle",
+    alignment_baseline=>"middle",
+    font_size         => 4,
+    font_family       =>"Arial",
+    fill              =>"black");
+
+  $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+  say STDERR $s->print;
+
+A B<-> in an svg keyword can be replaced with B<_> to reduce line noise.
+
+The L<print> method automatically creates an B<svg> to wrap around all the svg
+statements specified.  The image so created will fill all of the available
+space in the browser if the image is shown by itself, else it will fill all of
+the available space in the parent tag containing the svg statements if the svg
+is inlined in html.
+
+This package automatically tracks the dimensions of the objects specified in
+the svg statements and creates a viewport wide enough and high enough to
+display them fully in whatever space the browser allocates to the image.  If
+you wish to set these dimensions yourself, call the L<print> method as follows:
+
+  say STDERR $s->print(width=>2000, height=>1000);
+
+If you wish to inline the generated html you should remove the first two lines
+of the generated code using a regular expression to remove the superfluous xml
+headers.
 
 =head1 Description
 
@@ -126,24 +159,31 @@ module.  For an alphabetic listing of all methods by name see L<Index|/Index>.
 
 =head1 Constructors
 
-Construct a new SVG object
+Construct and print a new SVG object.
 
-=head2 new(%options)
+=head2 new()
 
-New SVG
+Create a new SVG object.
 
-     Parameter  Description
-  1  %options   Options
 
 B<Example:>
 
 
 
-    my $s = new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+    my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    $s->text  ( x=>10,  y=>10, cdata =>"Hello World", font_size=>4);
-    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent");
+
+    $s->text(x=>10, y=>10, z_index=>1,
+      cdata             =>"Hello World",
+      text_anchor       =>"middle",
+      alignment_baseline=>"middle",
+      font_size         => 4,
+      font_family       =>"Arial",
+      fill              =>"black");
+
+    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
     owf fpe(qw(svg test svg)), $s->print;
+    ok $s->print =~ m(circle)
 
 
 =head2 print($svg, %options)
@@ -152,11 +192,36 @@ Print resulting svg string
 
      Parameter  Description
   1  $svg       Svg
-  2  %options   Options
+  2  %options   Svg options
+
+B<Example:>
+
+
+    my $s = Svg::Simple::new();
+
+    $s->text(x=>10, y=>10, z_index=>1,
+      cdata             =>"Hello World",
+      text_anchor       =>"middle",
+      alignment_baseline=>"middle",
+      font_size         => 4,
+      font_family       =>"Arial",
+      fill              =>"black");
+
+    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+
+    owf fpe(qw(svg test svg)), $s->print;  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+
+    ok $s->print =~ m(circle)  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+
+
+
+=head1 Private Methods
 
 =head2 AUTOLOAD($svg, %options)
 
-Allow methods with constant parameters to be called as B<method_p1_p2>...(variable parameters) whenever it is easier to type underscores than (qw()).
+SVG methods
 
      Parameter  Description
   1  $svg       Svg object
@@ -166,9 +231,9 @@ Allow methods with constant parameters to be called as B<method_p1_p2>...(variab
 =head1 Index
 
 
-1 L<AUTOLOAD|/AUTOLOAD> - Allow methods with constant parameters to be called as B<method_p1_p2>.
+1 L<AUTOLOAD|/AUTOLOAD> - SVG methods
 
-2 L<new|/new> - New SVG
+2 L<new|/new> - Create a new SVG object.
 
 3 L<print|/print> - Print resulting svg string
 
@@ -213,16 +278,23 @@ test unless caller;
 
 1;
 # podDocumentation
-#__DATA__
+__DATA__
 use Test::More tests => 1;
 
 eval "goto latest";
 
 if (1) {                                                                        #Tnew #Tprint
-  my $s = new();
-  $s->text  ( x=>10,  y=>10, cdata =>"Hello World", font_size=>4);
-  $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent");
-  my $S = $s->print;
-  owf fpe(qw(svg test svg)), $S;
-  ok $S =~ m(circle)
+  my $s = Svg::Simple::new();
+
+  $s->text(x=>10, y=>10, z_index=>1,
+    cdata             =>"Hello World",
+    text_anchor       =>"middle",
+    alignment_baseline=>"middle",
+    font_size         => 4,
+    font_family       =>"Arial",
+    fill              =>"black");
+
+  $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+  owf fpe(qw(svg test svg)), $s->print;
+  ok $s->print =~ m(circle)
  }
