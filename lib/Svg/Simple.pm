@@ -131,6 +131,8 @@ Svg::Simple makes it easy to write svg using Perl syntax as in:
   $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
   say STDERR $s->print;
 
+=for html To get: <img src="image.png" alt="Embedded Image">
+
 A B<-> in an svg keyword can be replaced with B<_> to reduce line noise.
 
 The L<print> method automatically creates an B<svg> to wrap around all the svg
