@@ -298,7 +298,7 @@ if (1) {                                                                        
     cdata             =>"Hello World",
     text_anchor       =>"middle",
     alignment_baseline=>"middle",
-    font_size         => 4,
+    font_size         => 3,
     font_family       =>"Arial",
     fill              =>"black");
 
