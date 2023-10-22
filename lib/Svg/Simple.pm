@@ -30,8 +30,8 @@ sub new(%)                                                                      
 sub print($%)                                                                   # Print resulting svg string.
  {my ($svg, %options) = @_;                                                     # Svg, svg options
   my $s = join "\n", $svg->code->@*;
-  my $X = $options{width}   // $svg->mX;                                        # Maximum width
-  my $Y = $options{gheight} // $svg->mY;                                        # Maximum height
+  my $X = $options{width}  // $svg->mX;                                         # Maximum width
+  my $Y = $options{height} // $svg->mY;                                         # Maximum height
   my $e = q(</svg>);
   <<END;
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -303,6 +303,6 @@ if (1) {                                                                        
     fill              =>"black");
 
   $s->circle(cx=>8, cy=>8, r=>7, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-  my $f = owf fpe(qw(svg test svg)), $s->print;
+  my $f = owf fpe(qw(svg test svg)), $s->print(width=>16, height=>16);
   ok $s->print =~ m(circle)
  }
