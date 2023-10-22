@@ -132,7 +132,6 @@ Svg::Simple makes it easy to write svg using Perl syntax as in:
   say STDERR $s->print;
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/svg/test.svg">
-![Sample Svg Image](https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/svg/test.svg)
 
 A B<-> in an svg keyword can be replaced with B<_> to reduce line noise.
 
