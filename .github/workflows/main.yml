@@ -1,4 +1,4 @@
-# Test 2023-10-22 at 05:30:00
+# Test 2023-10-22 at 05:30:27
 
 name: Test
 
@@ -24,6 +24,11 @@ jobs:
       run:  sudo cpan install -T Data::Dump
     - name: Ubuntu update
       run:  sudo apt update
+
+    - name: Tree
+      run:
+        sudo apt install tree
+        tree
 
     - name: Test Perl
       run:
