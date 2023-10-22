@@ -78,7 +78,7 @@ jobs:
 
     - name: Test Perl
       run:
-        perl -Ilib Svg/Simple.pm
+        perl lib/Svg/Simple.pm
 END
 
   my $f = writeFileUsingSavedToken $user, $repo, $wf, $y;                       # Upload workflow
