@@ -1,4 +1,4 @@
-# Test 2023-10-22 at 06:09:58
+# Test 2023-10-22 at 06:19:08
 
 name: Test
 
@@ -20,11 +20,6 @@ jobs:
         repository: philiprbrenan/DataTableText
         path: dtt
 
-    - uses: actions/checkout@v3
-      with:
-        repository: philiprbrenan/SvgSimple
-        path: svg
-
     - name: Cpan
       run:  sudo cpan install -T Data::Dump
     - name: Ubuntu update
@@ -37,4 +32,4 @@ jobs:
 
     - name: Test Perl
       run:
-        perl -Idtt -Isvg lib/Svg/Simple.pm
+        perl -Idtt lib/Svg/Simple.pm
