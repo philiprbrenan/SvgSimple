@@ -294,7 +294,7 @@ eval "goto latest";
 if (1) {                                                                        #Tnew #Tprint
   my $s = Svg::Simple::new();
 
-  $s->text(x=>10, y=>10, z_index=>1,
+  $s->text(x=>8, y=>8,
     cdata             =>"Hello World",
     text_anchor       =>"middle",
     alignment_baseline=>"middle",
@@ -302,7 +302,7 @@ if (1) {                                                                        
     font_family       =>"Arial",
     fill              =>"black");
 
-  $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+  $s->circle(cx=>8, cy=>8, r=>7, stroke=>"blue", fill=>"transparent", opacity=>0.5);
   owf fpe(qw(svg test svg)), $s->print;
   ok $s->print =~ m(circle)
  }
