@@ -1,4 +1,4 @@
-# Test 2023-10-22 at 05:27:29
+# Test 2023-10-22 at 05:30:00
 
 name: Test
 
@@ -27,4 +27,4 @@ jobs:
 
     - name: Test Perl
       run:
-        perl lib/Svg/Simple.pm
+        perl -Idtt lib/Svg/Simple.pm
