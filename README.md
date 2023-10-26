@@ -8,15 +8,16 @@ Svg::Simple makes it easy to write [Scalar Vector Graphics](https://en.wikipedia
 
     my $s = Svg::Simple::new();
 
-    $s->text(x=>10, y=>10, z_index=>1,
+    $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
       alignment_baseline=>"middle",
-      font_size         => 4,
+      font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
 
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+
     say STDERR $s->print;
 
 <div>
