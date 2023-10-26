@@ -6,7 +6,7 @@
 # podDocumentation
 package Svg::Simple;
 require v5.34;
-our $VERSION = 20231021;
+our $VERSION = 20231026;
 use warnings FATAL => qw(all);
 use strict;
 use Carp qw(confess);
@@ -64,24 +64,29 @@ sub AUTOLOAD($%)                                                                
   eval                                                                          # Maximum extent of the Svg
    {my $X = $svg->mY;
     my $Y = $svg->mY;
-    if ($n =~ m(\Arect\Z)i)
-     {$X = max $X, $options{x}+$options{width};
-      $Y = max $Y, $options{y}+$options{height};
-     }
+    my $w = $options{stroke} ? $options{stroke_width} // $options{"stroke-width"} // 1 : 0;
     if ($n =~ m(\Acircle\Z)i)
-     {$X = max $X, $options{cx}+$options{r};
-      $Y = max $Y, $options{cy}+$options{r};
+     {$X = max $X, $w + $options{cx}+$options{r};
+      $Y = max $Y, $w + $options{cy}+$options{r};
+     }
+    if ($n =~ m(\Aline\Z)i)
+     {$X = max $X, $w + $options{$_} for qw(x1 x2);
+      $Y = max $Y, $w + $options{$_} for qw(y1 y2);
+     }
+    if ($n =~ m(\Arect\Z)i)
+     {$X = max $X, $w + $options{x}+$options{width};
+      $Y = max $Y, $w + $options{y}+$options{height};
      }
     if ($n =~ m(\Atext\Z)i)
-     {$X = max $X, $options{x} + length($options{cdata});
-      $Y = max $Y, $options{y};
+     {$X = max $X, $w + $options{x} + length($options{cdata});
+      $Y = max $Y, $w + $options{y};
      }
     $svg->mX = $X;
     $svg->mY = $Y;
    };
 
   my $p = join " ", @s;                                                         # Options
-  if (my $t = $options{cdata})
+  if (defined(my $t = $options{cdata}))
    {push $svg->code->@*, "<$n $p>$t</$n>"                                       # Internal text
    }
   else
@@ -120,15 +125,16 @@ Svg::Simple makes it easy to write svg using Perl syntax as in:
 
   my $s = Svg::Simple::new();
 
-  $s->text(x=>10, y=>10, z_index=>1,
+  $s->text(x=>10, y=>10,
     cdata             =>"Hello World",
     text_anchor       =>"middle",
     alignment_baseline=>"middle",
-    font_size         => 4,
+    font_size         => 3.6,
     font_family       =>"Arial",
     fill              =>"black");
 
   $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+
   say STDERR $s->print;
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/test.svg">
