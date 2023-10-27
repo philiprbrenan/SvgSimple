@@ -119,11 +119,15 @@ use vars qw(@ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 
 =head1 Name
 
-Svg::Simple - Write L<svg> using Perl syntax.
+Svg::Simple - Write
+L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> using Perl
+syntax.
 
 =head1 Synopsis
 
-Svg::Simple makes it easy to write L<svg> using Perl syntax as in:
+Svg::Simple makes it easy to write
+L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> using Perl syntax
+as in:
 
   my $s = Svg::Simple::new();
 
@@ -141,30 +145,38 @@ Svg::Simple makes it easy to write L<svg> using Perl syntax as in:
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/test.svg">
 
-A B<-> in an L<svg> keyword can be replaced with B<_> to reduce line noise.
+A B<-> in an L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics>
+keyword can be replaced with B<_> to reduce line noise.
 
-The L<print> method automatically creates an L<svg> to wrap around all the
-L<svg> statements specified.  The image so created will fill all of the
-available space in the browser if the image is shown by itself, else it will
-fill all of the available space in the parent tag containing the L<svg>
-statements if the L<svg> is inlined in L<html> .
+The L<print> method automatically creates an
+L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> to wrap around
+all the L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics>
+statements specified.  The image so created will fill all of the available
+space in the browser if the image is shown by itself, else it will fill all of
+the available space in the parent tag containing the
+L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> statements if the
+L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> is inlined in
+L<html> .
 
 This package automatically tracks the dimensions of the objects specified in
-the L<svg> statements and creates a viewport wide enough and high enough to
-display them fully in whatever space the browser allocates to the L<svg> image.
+the L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> statements
+and creates a viewport wide enough and high enough to display them fully in
+whatever space the browser allocates to the
+L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> image.
 
 If you wish to set these dimensions yourself, call the L<print> method with
 overriding values as in:
 
   say STDERR $s->print(width=>2000, height=>1000);
 
-If you wish to inline the generated L<html> you should remove the first two lines
-of the generated code using a regular expression to remove the superfluous L<xml>
+If you wish to inline the generated L<html|https://en.wikipedia.org/wiki/HTML>
+you should remove the first two lines of the generated code using a regular
+expression to remove the superfluous L<xml|https://en.wikipedia.org/wiki/XML>
 headers.
 
 =head1 Description
 
-Write L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> using Perl syntax.
+Write
 
 
 Version 20231026.
@@ -189,10 +201,10 @@ Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vec
 B<Example:>
 
 
-
+  
     my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-
+  
     $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
@@ -200,11 +212,11 @@ B<Example:>
       font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
-
+  
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
     my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
     ok($s->print =~ m(circle));
-
+  
 
 =head2 print($svg, %options)
 
@@ -218,7 +230,7 @@ B<Example:>
 
 
     my $s = Svg::Simple::new();
-
+  
     $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
@@ -226,15 +238,15 @@ B<Example:>
       font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
-
+  
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-
+  
     my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-
+  
     ok($s->print =~ m(circle));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-
+  
 
 
 =head1 Private Methods
