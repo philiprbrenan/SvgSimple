@@ -273,29 +273,11 @@ under the same terms as Perl itself.
 
 =cut
 
-
-
-# Tests and documentation
-
-sub test
- {my $p = __PACKAGE__;
-  binmode($_, ":utf8") for *STDOUT, *STDERR;
-  return if eval "eof(${p}::DATA)";
-  my $s = eval "join('', <${p}::DATA>)";
-  $@ and die $@;
-  eval $s;
-  $@ and die $@;
-  1
- }
-
-test unless caller;
-
-1;
-# podDocumentation
-__DATA__
-use Test::More tests => 1;
-
-eval "goto latest";
+#D0 Tests                                                                       # Tests and examples
+goto finish if caller;                                                          # Skip testing if we are being called as a module
+eval "use Test::More qw(no_plan);";
+eval "Test::More->builder->output('/dev/null');" if -e q(/home/phil/);
+eval {goto latest};
 
 if (1) {                                                                        #Tnew #Tprint
   my $s = Svg::Simple::new();
@@ -310,5 +292,8 @@ if (1) {                                                                        
 
   $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
   my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
-  ok $s->print =~ m(circle)
+  ok($s->print =~ m(circle));
  }
+
+done_testing();
+finish: 1;
