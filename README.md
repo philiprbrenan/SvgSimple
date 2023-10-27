@@ -1,10 +1,14 @@
 # Name
 
-Svg::Simple - Write [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl syntax.
+Svg::Simple - Write
+[Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl
+syntax.
 
 # Synopsis
 
-Svg::Simple makes it easy to write [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl syntax as in:
+Svg::Simple makes it easy to write
+[Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl syntax
+as in:
 
     my $s = Svg::Simple::new();
 
@@ -24,30 +28,38 @@ Svg::Simple makes it easy to write [Scalar Vector Graphics](https://en.wikipedia
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/test.svg">
 </div>
 
-A **-** in an [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) keyword can be replaced with **\_** to reduce line noise.
+A **-** in an [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
+keyword can be replaced with **\_** to reduce line noise.
 
-The [print](https://metacpan.org/pod/print) method automatically creates an [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) to wrap around all the
-[Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) statements specified.  The image so created will fill all of the
-available space in the browser if the image is shown by itself, else it will
-fill all of the available space in the parent tag containing the [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
-statements if the [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) is inlined in [HTML](https://en.wikipedia.org/wiki/HTML) .
+The [print](https://metacpan.org/pod/print) method automatically creates an
+[Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) to wrap around
+all the [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
+statements specified.  The image so created will fill all of the available
+space in the browser if the image is shown by itself, else it will fill all of
+the available space in the parent tag containing the
+[Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) statements if the
+[Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) is inlined in
+[HTML](https://en.wikipedia.org/wiki/HTML) .
 
 This package automatically tracks the dimensions of the objects specified in
-the [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) statements and creates a viewport wide enough and high enough to
-display them fully in whatever space the browser allocates to the [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) image.
+the [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) statements
+and creates a viewport wide enough and high enough to display them fully in
+whatever space the browser allocates to the
+[Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) image.
 
 If you wish to set these dimensions yourself, call the [print](https://metacpan.org/pod/print) method with
 overriding values as in:
 
     say STDERR $s->print(width=>2000, height=>1000);
 
-If you wish to inline the generated [HTML](https://en.wikipedia.org/wiki/HTML) you should remove the first two lines
-of the generated code using a regular expression to remove the superfluous [Xml](https://en.wikipedia.org/wiki/XML)
+If you wish to inline the generated [html](https://en.wikipedia.org/wiki/HTML)
+you should remove the first two lines of the generated code using a regular
+expression to remove the superfluous [xml](https://en.wikipedia.org/wiki/XML)
 headers.
 
 # Description
 
-Write [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl syntax.
+Write
 
 Version 20231026.
 
@@ -67,20 +79,21 @@ Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vec
 
 **Example:**
 
-    my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+      my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-
-    $s->text(x=>10, y=>10,
-      cdata             =>"Hello World",
-      text_anchor       =>"middle",
-      alignment_baseline=>"middle",
-      font_size         => 3.6,
-      font_family       =>"Arial",
-      fill              =>"black");
-
-    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-    my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
-    ok($s->print =~ m(circle));
+    
+      $s->text(x=>10, y=>10,
+        cdata             =>"Hello World",
+        text_anchor       =>"middle",
+        alignment_baseline=>"middle",
+        font_size         => 3.6,
+        font_family       =>"Arial",
+        fill              =>"black");
+    
+      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+      my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
+      ok($s->print =~ m(circle));
+    
 
 ## print($svg, %options)
 
@@ -92,22 +105,24 @@ Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_
 
 **Example:**
 
-    my $s = Svg::Simple::new();
+      my $s = Svg::Simple::new();
+    
+      $s->text(x=>10, y=>10,
+        cdata             =>"Hello World",
+        text_anchor       =>"middle",
+        alignment_baseline=>"middle",
+        font_size         => 3.6,
+        font_family       =>"Arial",
+        fill              =>"black");
+    
+      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+    
+      my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    $s->text(x=>10, y=>10,
-      cdata             =>"Hello World",
-      text_anchor       =>"middle",
-      alignment_baseline=>"middle",
-      font_size         => 3.6,
-      font_family       =>"Arial",
-      fill              =>"black");
+    
+      ok($s->print =~ m(circle));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-
-    my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
-
-
-    ok($s->print =~ m(circle));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+    
 
 # Private Methods
 
