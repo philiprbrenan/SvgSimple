@@ -61,7 +61,7 @@ headers.
 
 Write [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl syntax.
 
-Version 20231026.
+Version 20231028.
 
 The following sections describe the methods in each functional area of this
 module.  For an alphabetic listing of all methods by name see [Index](#index).
@@ -79,20 +79,21 @@ Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vec
 
 **Example:**
 
-    my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+      my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-
-    $s->text(x=>10, y=>10,
-      cdata             =>"Hello World",
-      text_anchor       =>"middle",
-      alignment_baseline=>"middle",
-      font_size         => 3.6,
-      font_family       =>"Arial",
-      fill              =>"black");
-
-    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-    my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
-    ok($s->print =~ m(circle));
+    
+      $s->text(x=>10, y=>10,
+        cdata             =>"Hello World",
+        text_anchor       =>"middle",
+        alignment_baseline=>"middle",
+        font_size         => 3.6,
+        font_family       =>"Arial",
+        fill              =>"black");
+    
+      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+      my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
+      ok($s->print =~ m(circle));
+    
 
 ## print($svg, %options)
 
@@ -104,22 +105,24 @@ Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_
 
 **Example:**
 
-    my $s = Svg::Simple::new();
+      my $s = Svg::Simple::new();
+    
+      $s->text(x=>10, y=>10,
+        cdata             =>"Hello World",
+        text_anchor       =>"middle",
+        alignment_baseline=>"middle",
+        font_size         => 3.6,
+        font_family       =>"Arial",
+        fill              =>"black");
+    
+      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+    
+      my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    $s->text(x=>10, y=>10,
-      cdata             =>"Hello World",
-      text_anchor       =>"middle",
-      alignment_baseline=>"middle",
-      font_size         => 3.6,
-      font_family       =>"Arial",
-      fill              =>"black");
+    
+      ok($s->print =~ m(circle));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-
-    my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
-
-
-    ok($s->print =~ m(circle));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+    
 
 # Private Methods
 
