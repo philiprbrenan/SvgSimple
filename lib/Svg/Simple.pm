@@ -33,13 +33,24 @@ sub print($%)                                                                   
   my $X = $options{width}  // $svg->mX;                                         # Maximum width
   my $Y = $options{height} // $svg->mY;                                         # Maximum height
   my $e = q(</svg>);
-  <<END;
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+
+  my $S = <<"END";
 <svg height="100%" viewBox="0 0 $X $Y" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 $s
 $e
 END
+
+  my $H = <<"END";
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+END
+
+  my $t = $options{inline} ? $S : $H.$S;                                        # Write without headers for inline usage
+
+  if (my $f = $options{svg})                                                    # Write to file
+   {owf(fpe($f, q(svg)), $t)
+   }
+  $t
  }
 
 our $AUTOLOAD;                                                                  # The method to be autoloaded appears here
@@ -189,7 +200,7 @@ module.  For an alphabetic listing of all methods by name see L<Index|/Index>.
 
 Construct and print a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> object.
 
-=head2 new(%options)
+=head2 new (%options)
 
 Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> object.
 
@@ -199,10 +210,10 @@ Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vec
 B<Example:>
 
 
-
+  
     my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-
+  
     $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
@@ -210,13 +221,20 @@ B<Example:>
       font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
-
+  
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-    my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
-    ok($s->print =~ m(circle));
+  
+    my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
+    ok($t =~ m(circle));
+  
+  
 
-=head2 print($svg, %options)
+=for html <img src="https:/raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+  
+
+=head2 print   ($svg, %options)
 
 Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> string.
 
@@ -228,23 +246,16 @@ B<Example:>
 
 
     my $s = Svg::Simple::new();
+  
+    $s->rect(x=>1, y=>1, width=>8, height=>8, stroke=>"blue");
+  
+    my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    $s->text(x=>10, y=>10,
-      cdata             =>"Hello World",
-      text_anchor       =>"middle",
-      alignment_baseline=>"middle",
-      font_size         => 3.6,
-      font_family       =>"Arial",
-      fill              =>"black");
+    ok($t =~ m(rect));
+  
 
-    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-
-    my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
-
-
-    ok($s->print =~ m(circle));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
-
-
+=for html <img src="https:/raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
+  
 
 
 =head1 Private Methods
@@ -297,7 +308,9 @@ eval "use Test::More qw(no_plan);";
 eval "Test::More->builder->output('/dev/null');" if -e q(/home/phil/);
 eval {goto latest};
 
-if (1) {                                                                        #Tnew #Tprint
+#Svg https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/
+
+if (1) {                                                                        #Tnew
   my $s = Svg::Simple::new();
 
   $s->text(x=>10, y=>10,
@@ -309,8 +322,16 @@ if (1) {                                                                        
     fill              =>"black");
 
   $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-  my $f = owf fpe(qw(svg test svg)), $s->print(width=>20, height=>20);
-  ok($s->print =~ m(circle));
+  my $t = $s->print(svg=>q(svg/new));
+  ok($t =~ m(circle));
+ }
+
+if (1) {                                                                        #Tprint
+  my $s = Svg::Simple::new();
+
+  $s->rect(x=>1, y=>1, width=>8, height=>8, stroke=>"blue");
+  my $t = $s->print(svg=>q(svg/rect));
+  ok($t =~ m(rect));
  }
 
 done_testing();
