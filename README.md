@@ -61,7 +61,7 @@ headers.
 
 Write [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl syntax.
 
-Version 20231031.
+Version 20231105.
 
 The following sections describe the methods in each functional area of this
 module.  For an alphabetic listing of all methods by name see [Index](#index).
@@ -99,7 +99,7 @@ Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vec
     
 
 <div>
-    <img src="https:/raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+    <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 </div>
 
 ## print   ($svg, %options)
@@ -122,7 +122,7 @@ Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_
     
 
 <div>
-    <img src="https:/raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
+    <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
 </div>
 
 # Private Methods
