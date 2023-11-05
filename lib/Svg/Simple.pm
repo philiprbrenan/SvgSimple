@@ -6,7 +6,7 @@
 # podDocumentation
 package Svg::Simple;
 require v5.34;
-our $VERSION = 20231031;
+our $VERSION = 20231105;
 use warnings FATAL => qw(all);
 use strict;
 use Carp qw(confess);
@@ -188,7 +188,7 @@ headers.
 Write L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> using Perl syntax.
 
 
-Version 20231031.
+Version 20231105.
 
 
 The following sections describe the methods in each functional area of this
@@ -230,7 +230,7 @@ B<Example:>
   
   
 
-=for html <img src="https:/raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+=for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
   
 
@@ -254,7 +254,7 @@ B<Example:>
     ok($t =~ m(rect));
   
 
-=for html <img src="https:/raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
+=for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
   
 
 
