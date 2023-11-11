@@ -79,24 +79,22 @@ Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vec
 
 **Example:**
 
-      my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+    my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    
-      $s->text(x=>10, y=>10,
-        cdata             =>"Hello World",
-        text_anchor       =>"middle",
-        alignment_baseline=>"middle",
-        font_size         => 3.6,
-        font_family       =>"Arial",
-        fill              =>"black");
-    
-      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-    
-      my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-      ok($t =~ m(circle));
-    
-    
+    $s->text(x=>10, y=>10,
+      cdata             =>"Hello World",
+      text_anchor       =>"middle",
+      alignment_baseline=>"middle",
+      font_size         => 3.6,
+      font_family       =>"Arial",
+      fill              =>"black");
+
+    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+
+    my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+    ok($t =~ m(circle));
 
 <div>
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
@@ -112,14 +110,13 @@ Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_
 
 **Example:**
 
-      my $s = Svg::Simple::new();
-    
-      $s->rect(x=>1, y=>1, width=>8, height=>8, stroke=>"blue");
-    
-      my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+    my $s = Svg::Simple::new();
 
-      ok($t =~ m(rect));
-    
+    $s->rect(x=>1, y=>1, width=>8, height=>8, stroke=>"blue");
+
+    my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+    ok($t =~ m(rect));
 
 <div>
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
