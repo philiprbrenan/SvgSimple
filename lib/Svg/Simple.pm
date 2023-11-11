@@ -210,10 +210,10 @@ Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vec
 B<Example:>
 
 
-  
+
     my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-  
+
     $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
@@ -221,18 +221,18 @@ B<Example:>
       font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
-  
+
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-  
+
     my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
     ok($t =~ m(circle));
-  
-  
+
+
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-  
+
 
 =head2 print   ($svg, %options)
 
@@ -246,16 +246,16 @@ B<Example:>
 
 
     my $s = Svg::Simple::new();
-  
+
     $s->rect(x=>1, y=>1, width=>8, height=>8, stroke=>"blue");
-  
+
     my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
     ok($t =~ m(rect));
-  
+
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
-  
+
 
 
 =head1 Private Methods
@@ -304,8 +304,8 @@ under the same terms as Perl itself.
 
 #D0 Tests                                                                       # Tests and examples
 goto finish if caller;                                                          # Skip testing if we are being called as a module
-eval "use Test::More qw(no_plan);";
-eval "Test::More->builder->output('/dev/null');" if -e q(/home/phil/);
+eval "use Test::More qw(no_plan)";
+eval "Test::More->builder->output('/dev/null')" if -e q(/home/phil/);
 eval {goto latest};
 
 #Svg https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/
