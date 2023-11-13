@@ -20,22 +20,46 @@ makeDieConfess;
 sub new(%)                                                                      # Create a new L<svg> object.
  {my (%options) = @_;                                                           # Svg options
   genHash(__PACKAGE__,
-    code=>[],                                                                   # Svg code generated
-    mX=>0,                                                                      # Maximum X coordinate encountered
-    mY=>0,                                                                      # Maximum Y coordinate encountered
-    defaults=>$options{defaults},                                               # Default attributes to be applied to each statement
+    code     => [],                                                             # Svg code generated
+    mX       => 0,                                                              # Maximum X coordinate encountered
+    mY       => 0,                                                              # Maximum Y coordinate encountered
+    defaults => $options{defaults},                                             # Default attributes to be applied to each statement
+    grid     => $options{grid},                                                 # Grid of specified size requested if non zero
+    z        => {0=>1},                                                         # Values of z encountered: the elements will be drawn in passes in Z order.
   );
+ }
+
+sub gridLines($$$$)                                                             # Draw a grid.
+ {my ($svg, $x, $y, $g) = @_;                                                   # Svg, maximum X, maximum Y, grid square size
+  my @s;
+  my $X = int($x / $g); my $Y = int($y / $g);                                   # Steps in X and Y
+  $svg->line(x1=>$_*$g, x2=>$_*$g, y1=>0, y2=>$y, opacity=>0.2, stroke_width=>$x/500, stroke=>"black") for 0..$X;      # X lines
+  $svg->line(y1=>$_*$g, y2=>$_*$g, x1=>0, x2=>$x, opacity=>0.2, stroke_width=>$y/500, stroke=>"black") for 0..$Y;      # Y lines
  }
 
 sub print($%)                                                                   # Print resulting L<svg> string.
  {my ($svg, %options) = @_;                                                     # Svg, svg options
-  my $s = join "\n", $svg->code->@*;
   my $X = $options{width}  // $svg->mX;                                         # Maximum width
   my $Y = $options{height} // $svg->mY;                                         # Maximum height
+  my $g = $svg->grid ? $svg->gridLines($X, $Y, $svg->grid) : '';                # Draw a grid if requested
   my $e = q(</svg>);
+
+  my @C = $svg->code->@*;                                                       # Elements
+  my @c;                                                                        # Elements reordered by z index
+  for my $Z(sort {$a <=> $b} keys $svg->z->%*)                                  # Reorder elements by z from low to high
+   {for my $C(@C)                                                               # Scan svg elements
+     {my ($c, $z) = @$C;                                                        # Element, z order
+      if ($z == $Z)                                                             # Matching z order
+       {push @c, $c;
+       }
+     }
+   }
+
+  my $s = join "\n", @c;
 
   my $S = <<"END";
 <svg height="100%" viewBox="0 0 $X $Y" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+$g
 $s
 $e
 END
@@ -96,12 +120,17 @@ sub AUTOLOAD($%)                                                                
     $svg->mY = max $svg->mY, $Y;
    };
 
+  my $z = 0;                                                                    # Default z order
+  if (defined(my $Z = $options{z}))                                             # Overridding Z order
+   {$svg->z->{$z = $Z}++;
+   }
+
   my $p = join " ", @s;                                                         # Options
   if (defined(my $t = $options{cdata}))
-   {push $svg->code->@*, "<$n $p>$t</$n>"                                       # Internal text
+   {push $svg->code->@*, ["<$n $p>$t</$n>", $z]                                 # Internal text
    }
   else
-   {push $svg->code->@*, "<$n $p/>"                                             # No internal text
+   {push $svg->code->@*, ["<$n $p/>",       $z]                                 # No internal text
    }
   $svg
  }
@@ -210,10 +239,11 @@ Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vec
 B<Example:>
 
 
+  if (1)                                                                          
+  
+   {my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
-
-
+  
     $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
@@ -221,18 +251,41 @@ B<Example:>
       font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
-
+  
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-
+  
     my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
     ok($t =~ m(circle));
+   }
+  
+
+=for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">
+  
+
+=head2 gridLines   ($svg, $x, $y, $g)
+
+Draw a grid.
+
+     Parameter  Description
+  1  $svg       Svg
+  2  $x         Maximum X
+  3  $y         Maximum Y
+  4  $g         Grid square size
+
+B<Example:>
 
 
+  if (1)                                                                          
+   {my $s = Svg::Simple::new(grid=>10);
+    $s->rect(x=>10, y=>10, width=>40, height=>30, stroke=>"blue", fill=>'transparent');
+    my $t = $s->print(svg=>q(svg/grid));
+    is_deeply(scalar(split /line/, $t), 12);
+   }
+  
 
-=for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
-
-
+=for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/grid.svg">
+  
 
 =head2 print   ($svg, %options)
 
@@ -245,17 +298,21 @@ Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_
 B<Example:>
 
 
-    my $s = Svg::Simple::new();
-
-    $s->rect(x=>1, y=>1, width=>8, height=>8, stroke=>"blue");
-
+  if (1)                                                                          
+   {my $s = Svg::Simple::new();
+  
+    my @d = (width=>8, height=>8, stroke=>"blue", fill=>"transparent");           # Default values
+    $s->rect(x=>1, y=>1, z=>1, @d, stroke=>"blue");                               # Defined earlier  but drawn above because of z order
+    $s->rect(x=>4, y=>4, z=>0, @d, stroke=>"red");
+  
     my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    ok($t =~ m(rect));
-
+    is_deeply(scalar(split /rect/, $t), 3);
+   }
+  
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
-
+  
 
 
 =head1 Private Methods
@@ -274,9 +331,11 @@ L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics>
 
 1 L<AUTOLOAD|/AUTOLOAD> - L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> methods.
 
-2 L<new|/new> - Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> object.
+2 L<gridLines|/gridLines> - Draw a grid.
 
-3 L<print|/print> - Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> string.
+3 L<new|/new> - Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> object.
+
+4 L<print|/print> - Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> string.
 
 =head1 Installation
 
@@ -310,8 +369,8 @@ eval {goto latest};
 
 #Svg https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/
 
-if (1) {                                                                        #Tnew
-  my $s = Svg::Simple::new();
+if (1)                                                                          #Tnew
+ {my $s = Svg::Simple::new();
 
   $s->text(x=>10, y=>10,
     cdata             =>"Hello World",
@@ -326,12 +385,21 @@ if (1) {                                                                        
   ok($t =~ m(circle));
  }
 
-if (1) {                                                                        #Tprint
-  my $s = Svg::Simple::new();
+if (1)                                                                          #TgridLines
+ {my $s = Svg::Simple::new(grid=>10);
+  $s->rect(x=>10, y=>10, width=>40, height=>30, stroke=>"blue", fill=>'transparent');
+  my $t = $s->print(svg=>q(svg/grid));
+  is_deeply(scalar(split /line/, $t), 12);
+ }
 
-  $s->rect(x=>1, y=>1, width=>8, height=>8, stroke=>"blue");
+if (1)                                                                          #Tprint
+ {my $s = Svg::Simple::new();
+
+  my @d = (width=>8, height=>8, stroke=>"blue", fill=>"transparent");           # Default values
+  $s->rect(x=>1, y=>1, z=>1, @d, stroke=>"blue");                               # Defined earlier  but drawn above because of z order
+  $s->rect(x=>4, y=>4, z=>0, @d, stroke=>"red");
   my $t = $s->print(svg=>q(svg/rect));
-  ok($t =~ m(rect));
+  is_deeply(scalar(split /rect/, $t), 3);
  }
 
 done_testing();
