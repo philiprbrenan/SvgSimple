@@ -33,21 +33,22 @@ sub gridLines($$$$)                                                             
  {my ($svg, $x, $y, $g) = @_;                                                   # Svg, maximum X, maximum Y, grid square size
   my @s;
   my $X = int($x / $g); my $Y = int($y / $g);                                   # Steps in X and Y
-  my $w = $x / 1000;                                                            # Line width
-  my $f = 16 *$w;                                                               # Font size
+  my $f =     $g /  4;                                                         # Font size
+  my $w =     $f / 16;                                                         # Line width
   my @w = (opacity=>0.2, font_size=>$f, stroke_width=>$w, stroke=>"black",      # Font for grid
            text_anchor => "start", dominant_baseline => "hanging");
+  my @o = (opacity=>1);
 
   for my $i(0..$X)                                                              # X lines
    {my $c = $i*$g;
     $svg->line(x1=>$c, x2=>$c, y1=>0, y2=>$y, @w);
-    $svg->text(@w, x => $c, y => 0, cdata => $i) unless $i == $X;
+    $svg->text(@w, @o, x => $c, y => 0, cdata => $i) unless $i == $X;
    }
 
   for my $i(0..$Y)                                                              # Y lines
    {my $c = $i*$g;
     $svg->line(y1=>$c, y2=>$c, x1=>0, x2=>$x, @w);
-    $svg->text(@w, x => 0, y => $c, cdata => $i) unless $i == $Y;
+    $svg->text(@w, @o, x => 0, y => $c, cdata => $i) unless $i == $Y;
    }
  }
 
