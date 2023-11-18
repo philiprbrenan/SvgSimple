@@ -4,23 +4,23 @@
 
 <rect fill="transparent" height="30" stroke="blue" width="40" x="10" y="10"/>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="0" x2="0" y1="0" y2="41"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="0">0</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="0">0</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="10" x2="10" y1="0" y2="41"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="10" y="0">1</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="10" y="0">1</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="20" x2="20" y1="0" y2="41"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="20" y="0">2</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="20" y="0">2</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="30" x2="30" y1="0" y2="41"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="30" y="0">3</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="30" y="0">3</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="40" x2="40" y1="0" y2="41"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="40" y="0">4</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="40" y="0">4</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="50" x2="50" y1="0" y2="41"/>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="0" x2="51" y1="0" y2="0"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="0">0</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="0">0</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="0" x2="51" y1="10" y2="10"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="10">1</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="10">1</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="0" x2="51" y1="20" y2="20"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="20">2</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="20">2</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="0" x2="51" y1="30" y2="30"/>
-<text dominant-baseline="hanging" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="30">3</text>
+<text dominant-baseline="hanging" fill="black" font-size="2.5" opacity="1" stroke="black" stroke-width="0.15625" text-anchor="start" x="0" y="30">3</text>
 <line dominant-baseline="hanging" font-size="2.5" opacity="0.2" stroke="black" stroke-width="0.15625" text-anchor="start" x1="0" x2="51" y1="40" y2="40"/>
 </svg>
