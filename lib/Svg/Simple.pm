@@ -6,7 +6,7 @@
 # podDocumentation
 package Svg::Simple;
 require v5.34;
-our $VERSION = 20231105;
+our $VERSION = 20231118;
 use warnings FATAL => qw(all);
 use strict;
 use Carp qw(confess);
@@ -33,22 +33,22 @@ sub gridLines($$$$)                                                             
  {my ($svg, $x, $y, $g) = @_;                                                   # Svg, maximum X, maximum Y, grid square size
   my @s;
   my $X = int($x / $g); my $Y = int($y / $g);                                   # Steps in X and Y
-  my $f =     $g /  4;                                                         # Font size
-  my $w =     $f / 16;                                                         # Line width
+  my $f =     $g /  4;                                                          # Font size
+  my $w =     $f / 16;                                                          # Line width
   my @w = (opacity=>0.2, font_size=>$f, stroke_width=>$w, stroke=>"black",      # Font for grid
            text_anchor => "start", dominant_baseline => "hanging");
-  my @o = (opacity=>1);
+  my @f = (@w, opacity=>1, fill=>'black');
 
   for my $i(0..$X)                                                              # X lines
    {my $c = $i*$g;
     $svg->line(x1=>$c, x2=>$c, y1=>0, y2=>$y, @w);
-    $svg->text(@w, @o, x => $c, y => 0, cdata => $i) unless $i == $X;
+    $svg->text(@f, x => $c, y => 0, cdata => $i) unless $i == $X;
    }
 
   for my $i(0..$Y)                                                              # Y lines
    {my $c = $i*$g;
     $svg->line(y1=>$c, y2=>$c, x1=>0, x2=>$x, @w);
-    $svg->text(@w, @o, x => 0, y => $c, cdata => $i) unless $i == $Y;
+    $svg->text(@f, x => 0, y => $c, cdata => $i) unless $i == $Y;
    }
  }
 
@@ -232,7 +232,7 @@ headers.
 Write L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> using Perl syntax.
 
 
-Version 20231105.
+Version 20231118.
 
 
 The following sections describe the methods in each functional area of this
@@ -254,11 +254,11 @@ Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vec
 B<Example:>
 
 
-  if (1)
-
+  if (1)                                                                          
+  
    {my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-
+  
     $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
@@ -266,17 +266,17 @@ B<Example:>
       font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
-
+  
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-
+  
     my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
     ok($t =~ m(circle));
    }
-
+  
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">
-
+  
 
 =head2 gridLines   ($svg, $x, $y, $g)
 
@@ -291,16 +291,16 @@ Draw a grid.
 B<Example:>
 
 
-  if (1)
+  if (1)                                                                          
    {my $s = Svg::Simple::new(grid=>10);
     $s->rect(x=>10, y=>10, width=>40, height=>30, stroke=>"blue", fill=>'transparent');
     my $t = $s->print(svg=>q(svg/grid));
-    is_deeply(scalar(split /line/, $t), 12);
+    is_deeply(scalar(split /line/, $t), 32);
    }
-
+  
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/grid.svg">
-
+  
 
 =head2 print   ($svg, %options)
 
@@ -313,21 +313,21 @@ Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_
 B<Example:>
 
 
-  if (1)
+  if (1)                                                                          
    {my $s = Svg::Simple::new();
-
+  
     my @d = (width=>8, height=>8, stroke=>"blue", fill=>"transparent");           # Default values
     $s->rect(x=>1, y=>1, z=>1, @d, stroke=>"blue");                               # Defined earlier  but drawn above because of z order
     $s->rect(x=>4, y=>4, z=>0, @d, stroke=>"red");
-
+  
     my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
     is_deeply(scalar(split /rect/, $t), 3);
    }
-
+  
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
-
+  
 
 
 =head1 Private Methods
