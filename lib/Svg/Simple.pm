@@ -6,7 +6,7 @@
 # podDocumentation
 package Svg::Simple;
 require v5.34;
-our $VERSION = 20231118;
+our $VERSION = 20240308;
 use warnings FATAL => qw(all);
 use strict;
 use Carp qw(confess);
@@ -112,18 +112,19 @@ sub AUTOLOAD($%)                                                                
   my $n = $AUTOLOAD =~ s(\A.*::) ()r;                                           # Name of element
 
   eval                                                                          # Maximum extent of the Svg
-   {my $X = $svg->mY;
+   {my $X = $svg->mX;
     my $Y = $svg->mY;
     my $w = $options{stroke} ? $options{stroke_width} // $options{"stroke-width"} // 1 : 0;
+
     if ($n =~ m(\Acircle\Z)i)
      {$X = max $X, $w + $options{cx}+$options{r};
       $Y = max $Y, $w + $options{cy}+$options{r};
      }
-    if ($n =~ m(\Aline\Z)i)
+    if ($n =~ m(\Aline\Z)i)                                                     # Lines
      {$X = max $X, $w + $options{$_} for qw(x1 x2);
       $Y = max $Y, $w + $options{$_} for qw(y1 y2);
      }
-    if ($n =~ m(\Arect\Z)i)
+    if ($n =~ m(\Arect\Z)i)                                                     # REctangkes
      {$X = max $X, $w + $options{x}+$options{width};
       $Y = max $Y, $w + $options{y}+$options{height};
      }
@@ -134,9 +135,13 @@ sub AUTOLOAD($%)                                                                
     $svg->mX = max $svg->mX, $X;
     $svg->mY = max $svg->mY, $Y;
    };
+  if ($@)
+   {say STDERR $@;
+    exit;
+   }
 
   my $z = 0;                                                                    # Default z order
-  if (defined(my $Z = $options{z}))                                             # Overridding Z order
+  if (defined(my $Z = $options{z}))                                             # Override Z order
    {$svg->z->{$z = $Z}++;
    }
 
@@ -254,11 +259,11 @@ Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vec
 B<Example:>
 
 
-  if (1)                                                                          
-  
+  if (1)
+
    {my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-  
+
     $s->text(x=>10, y=>10,
       cdata             =>"Hello World",
       text_anchor       =>"middle",
@@ -266,17 +271,17 @@ B<Example:>
       font_size         => 3.6,
       font_family       =>"Arial",
       fill              =>"black");
-  
+
     $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-  
+
     my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
     ok($t =~ m(circle));
    }
-  
+
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">
-  
+
 
 =head2 gridLines   ($svg, $x, $y, $g)
 
@@ -291,16 +296,16 @@ Draw a grid.
 B<Example:>
 
 
-  if (1)                                                                          
+  if (1)
    {my $s = Svg::Simple::new(grid=>10);
     $s->rect(x=>10, y=>10, width=>40, height=>30, stroke=>"blue", fill=>'transparent');
     my $t = $s->print(svg=>q(svg/grid));
     is_deeply(scalar(split /line/, $t), 32);
    }
-  
+
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/grid.svg">
-  
+
 
 =head2 print   ($svg, %options)
 
@@ -313,21 +318,21 @@ Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_
 B<Example:>
 
 
-  if (1)                                                                          
+  if (1)
    {my $s = Svg::Simple::new();
-  
+
     my @d = (width=>8, height=>8, stroke=>"blue", fill=>"transparent");           # Default values
     $s->rect(x=>1, y=>1, z=>1, @d, stroke=>"blue");                               # Defined earlier  but drawn above because of z order
     $s->rect(x=>4, y=>4, z=>0, @d, stroke=>"red");
-  
+
     my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
     is_deeply(scalar(split /rect/, $t), 3);
    }
-  
+
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
-  
+
 
 
 =head1 Private Methods
