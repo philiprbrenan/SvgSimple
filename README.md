@@ -79,11 +79,11 @@ Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vec
 
 **Example:**
 
-    if (1)                                                                          
-    
+    if (1)
+
      {my $s = Svg::Simple::new();  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
-    
+
       $s->text(x=>10, y=>10,
         cdata             =>"Hello World",
         text_anchor       =>"middle",
@@ -91,14 +91,13 @@ Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vec
         font_size         => 3.6,
         font_family       =>"Arial",
         fill              =>"black");
-    
+
       $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-    
+
       my $t = $s->print(svg=>q(svg/new));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
       ok($t =~ m(circle));
      }
-    
 
 <div>
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/new.svg">
@@ -116,13 +115,12 @@ Draw a grid.
 
 **Example:**
 
-    if (1)                                                                          
+    if (1)
      {my $s = Svg::Simple::new(grid=>10);
       $s->rect(x=>10, y=>10, width=>40, height=>30, stroke=>"blue", fill=>'transparent');
       my $t = $s->print(svg=>q(svg/grid));
       is_deeply(scalar(split /line/, $t), 32);
      }
-    
 
 <div>
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/grid.svg">
@@ -138,18 +136,17 @@ Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_
 
 **Example:**
 
-    if (1)                                                                          
+    if (1)
      {my $s = Svg::Simple::new();
-    
+
       my @d = (width=>8, height=>8, stroke=>"blue", fill=>"transparent");           # Default values
       $s->rect(x=>1, y=>1, z=>1, @d, stroke=>"blue");                               # Defined earlier  but drawn above because of z order
       $s->rect(x=>4, y=>4, z=>0, @d, stroke=>"red");
-    
+
       my $t = $s->print(svg=>q(svg/rect));  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 
       is_deeply(scalar(split /rect/, $t), 3);
      }
-    
 
 <div>
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
