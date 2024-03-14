@@ -1,4 +1,4 @@
-#!/usr/bin/perl -I/home/phil/perl/cpan/DataTableText/lib/
+#!/usr/bin/perl -I/home/phil/perl/cpan/DataTableText/lib/ -I/home/phil/perl/cpan/Math-Intersection-Circle-Line/lib/
 #-------------------------------------------------------------------------------
 # Write SVG using Perl syntax.
 # Philip R Brenan at gmail dot com, Appa Apps Ltd Inc., 2017-2020
@@ -12,6 +12,8 @@ use strict;
 use Carp qw(confess);
 use Data::Dump qw(dump);
 use Data::Table::Text qw(:all);
+use Math::Intersection::Circle::Line;
+use utf8;
 
 makeDieConfess;
 
@@ -31,6 +33,7 @@ sub new(%)                                                                      
 
 sub gridLines($$$$)                                                             # Draw a grid.
  {my ($svg, $x, $y, $g) = @_;                                                   # Svg, maximum X, maximum Y, grid square size
+  @_ == 4 or confess "Four parameters";
   my @s;
   my $X = int($x / $g); my $Y = int($y / $g);                                   # Steps in X and Y
   my $f =     $g /  4;                                                          # Font size
@@ -116,21 +119,23 @@ sub AUTOLOAD($%)                                                                
     my $Y = $svg->mY;
     my $w = $options{stroke} ? $options{stroke_width} // $options{"stroke-width"} // 1 : 0;
 
+    my sub option($) {$options{$_[0]} // 0}                                     # Get an option or defualt to zero if not present.  This avoids the problem of validating the SVG parameters which the browser will do more effectively.
+
     if ($n =~ m(\Acircle\Z)i)
-     {$X = max $X, $w + $options{cx}+$options{r};
-      $Y = max $Y, $w + $options{cy}+$options{r};
+     {$X = max $X, $w + option("cx")+option("r");
+      $Y = max $Y, $w + option("cy")+option("r");
      }
     if ($n =~ m(\Aline\Z)i)                                                     # Lines
-     {$X = max $X, $w + $options{$_} for qw(x1 x2);
-      $Y = max $Y, $w + $options{$_} for qw(y1 y2);
+     {$X = max $X, $w + option("$_") for qw(x1 x2);
+      $Y = max $Y, $w + option("$_") for qw(y1 y2);
      }
-    if ($n =~ m(\Arect\Z)i)                                                     # REctangkes
-     {$X = max $X, $w + $options{x}+$options{width};
-      $Y = max $Y, $w + $options{y}+$options{height};
+    if ($n =~ m(\Arect\Z)i)                                                     # Rectangles
+     {$X = max $X, $w + option("x")+option("width");
+      $Y = max $Y, $w + option("y")+option("height");
      }
     if ($n =~ m(\Atext\Z)i)
-     {$X = max $X, $options{x} + $w * length($options{cdata});
-      $Y = max $Y, $options{y};
+     {$X = max $X, option("x") + $w * length(option("cdata"));
+      $Y = max $Y, option("y");
      }
     $svg->mX = max $svg->mX, $X;
     $svg->mY = max $svg->mY, $Y;
@@ -153,6 +158,44 @@ sub AUTOLOAD($%)                                                                
    {push $svg->code->@*, ["<$n $p/>",       $z]                                 # No internal text
    }
   $svg
+ }
+
+#D1 Utility functions                                                           # Extra features to make using Svg easier
+
+sub arcPath($$$$$$$$)                                                           # Arc through three points along the circumference of a circle from the first point through the middle point to the last point
+ {my ($svg, $N, $x1, $y1, $x2, $y2, $x3, $y3) = @_;                             # Svg, number of points on path, start x, start y, middle x, middle y, end x, end y
+  @_ == 8 or confess "Eight parameters";
+
+  Math::Intersection::Circle::Line::circumCircle                                # Draw a circle clockwise through the three points
+   {my ($cx, $cy) = @_;
+    my $r = Math::Intersection::Circle::Line::vectorLength($x1, $y1, $cx, $cy); # Radius of circle
+
+    my sub inter($$)                                                            # Point on the circumference of a circle where the line drawn through the specified point and the center of the circle intersect the circle closest to the specified point
+     {my ($x, $y) = @_;                                                         # Options
+
+      Math::Intersection::Circle::Line::intersectionCircleLine
+       {my ($x1, $y1, $x2, $y2) = @_;                                           # Intersection points
+        my $l1 = Math::Intersection::Circle::Line::vectorLength($x,$y, $x1,$y1);# One point on the circumference
+        my $l2 = Math::Intersection::Circle::Line::vectorLength($x,$y, $x2,$y2);# The opposite point
+        ($x1, $y1) = ($x2, $y2) if $l2 < $l1;                                   # The point on the circumference closest to the point being mapped
+        ($x1, $y1)                                                              # Return closest intersection point
+       } $cx, $cy, $r, $cx, $cy, $x, $y;
+     }
+
+    my @p;                                                                      # Path
+    for my $i(0..$N)                                                            # Step along first line segment mapping it on to the nearest part of the circle
+     {my $dx = ($x2 - $x1) * $i / $N;
+      my $dy = ($y2 - $y1) * $i / $N;
+      push @p, join " ", "L", inter $x1+$dx, $y1+$dy;
+     }
+    for my $i(0..$N)                                                            # Step along second line segment mapping it on to the nearest part of the circle
+     {my $dx = ($x3 - $x2) * $i / $N;
+      my $dy = ($y3 - $y2) * $i / $N;
+      push @p, join " ", "L", inter $x2+$dx, $y2+$dy;
+     }
+
+    join " ", @p;                                                               # Construct the SVG path string running along the circle circumference from the first point, through the middle point to the last point
+   } $x1, $y1, $x2, $y2, $x3, $y3;
  }
 
 #D0
@@ -200,6 +243,7 @@ Write L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Gra
   $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
 
   say STDERR $s->print;
+
 
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/test.svg">
 
@@ -420,6 +464,14 @@ if (1)                                                                          
   $s->rect(x=>4, y=>4, z=>0, @d, stroke=>"red");
   my $t = $s->print(svg=>q(svg/rect));
   is_deeply(scalar(split /rect/, $t), 3);
+ }
+
+if (1)                                                                          #TarcPath
+ {my $d = {width=>8, height=>8, stroke_width=>0.1, stroke=>"blue", fill=>"transparent"};           # Default values
+  my $s = Svg::Simple::new(defaults=>$d);
+  my $p = $s->arcPath(64, 1,1, 3,2, 1, 3);
+  $s->path(d=>"M 1 1  $p  Z");
+  $s->print(svg=>q(svg/arc1), width=>10, height=>10);
  }
 
 done_testing();
