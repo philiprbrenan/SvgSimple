@@ -76,7 +76,7 @@ sub print($%)                                                                   
   my $s = join "\n", @c;
 
   my $S = <<"END";
-<svg height="100%" viewBox="0 0 $X $Y" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg height="100%" viewBox="0 0 $X $Y" width="100%" background-color="none" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 $g
 $s
 $e
@@ -88,7 +88,6 @@ END
 END
 
   my $t = $options{inline} ? $S : $H.$S;                                        # Write without headers for inline usage
-
   if (my $f = $options{svg})                                                    # Write to file
    {owf(fpe($f, q(svg)), $t)
    }
