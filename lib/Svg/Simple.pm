@@ -89,7 +89,7 @@ END
 
   my $t = $options{inline} ? $S : $H.$S;                                        # Write without headers for inline usage
   if (my $f = $options{svg})                                                    # Write to file
-   {owf(fpe($f, q(svg)), $t)
+   {writeFile(fpe($f, q(svg)), $t)
    }
   $t
  }
@@ -280,7 +280,7 @@ headers.
 Write L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> using Perl syntax.
 
 
-Version 20231118.
+Version 20240308.
 
 
 The following sections describe the methods in each functional area of this
@@ -377,6 +377,41 @@ B<Example:>
 =for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
 
 
+=head1 Utility functions
+
+Extra features to make using Svg easier
+
+=head2 arcPath ($svg, $N, $x1, $y1, $x2, $y2, $x3, $y3)
+
+Arc through three points along the circumference of a circle from the first point through the middle point to the last point
+
+     Parameter  Description
+  1  $svg       Svg
+  2  $N         Number of points on path
+  3  $x1        Start x
+  4  $y1        Start y
+  5  $x2        Middle x
+  6  $y2        Middle y
+  7  $x3        End x
+  8  $y3        End y
+
+B<Example:>
+
+
+  if (1)
+   {my $d = {width=>8, height=>8, stroke_width=>0.1, stroke=>"blue", fill=>"transparent"};           # Default values
+    my $s = Svg::Simple::new(defaults=>$d);
+
+    my $p = $s->arcPath(64, 1,1, 3,2, 1, 3);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+    $s->path(d=>"M 1 1  $p  Z");
+    $s->print(svg=>q(svg/arc1), width=>10, height=>10);
+   }
+
+
+=for html <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/arc1.svg">
+
+
 
 =head1 Private Methods
 
@@ -392,13 +427,15 @@ L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics>
 =head1 Index
 
 
-1 L<AUTOLOAD|/AUTOLOAD> - L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> methods.
+1 L<arcPath|/arcPath> - Arc through three points along the circumference of a circle from the first point through the middle point to the last point
 
-2 L<gridLines|/gridLines> - Draw a grid.
+2 L<AUTOLOAD|/AUTOLOAD> - L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> methods.
 
-3 L<new|/new> - Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> object.
+3 L<gridLines|/gridLines> - Draw a grid.
 
-4 L<print|/print> - Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> string.
+4 L<new|/new> - Create a new L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> object.
+
+5 L<print|/print> - Print resulting L<Scalar Vector Graphics|https://en.wikipedia.org/wiki/Scalable_Vector_Graphics> string.
 
 =head1 Installation
 
@@ -411,7 +448,7 @@ comprehend, use, modify and install via B<cpan>:
 
 L<philiprbrenan@gmail.com|mailto:philiprbrenan@gmail.com>
 
-L<http://www.appaapps.com|http://www.appaapps.com>
+L<http://prb.appaapps.com|http://prb.appaapps.com>
 
 =head1 Copyright
 
@@ -426,6 +463,7 @@ under the same terms as Perl itself.
 
 #D0 Tests                                                                       # Tests and examples
 goto finish if caller;                                                          # Skip testing if we are being called as a module
+clearFolder(q(svg), 99);                                                        # Clear the output svg folder
 eval "use Test::More qw(no_plan)";
 eval "Test::More->builder->output('/dev/null')" if -e q(/home/phil/);
 eval {goto latest};
