@@ -61,7 +61,7 @@ headers.
 
 Write [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) using Perl syntax.
 
-Version 20231118.
+Version 20240308.
 
 The following sections describe the methods in each functional area of this
 module.  For an alphabetic listing of all methods by name see [Index](#index).
@@ -152,6 +152,40 @@ Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/rect.svg">
 </div>
 
+# Utility functions
+
+Extra features to make using Svg easier
+
+## arcPath ($svg, $N, $x1, $y1, $x2, $y2, $x3, $y3)
+
+Arc through three points along the circumference of a circle from the first point through the middle point to the last point
+
+       Parameter  Description
+    1  $svg       Svg
+    2  $N         Number of points on path
+    3  $x1        Start x
+    4  $y1        Start y
+    5  $x2        Middle x
+    6  $y2        Middle y
+    7  $x3        End x
+    8  $y3        End y
+
+**Example:**
+
+    if (1)
+     {my $d = {width=>8, height=>8, stroke_width=>0.1, stroke=>"blue", fill=>"transparent"};           # Default values
+      my $s = Svg::Simple::new(defaults=>$d);
+
+      my $p = $s->arcPath(64, 1,1, 3,2, 1, 3);  # 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+
+      $s->path(d=>"M 1 1  $p  Z");
+      $s->print(svg=>q(svg/arc1), width=>10, height=>10);
+     }
+
+<div>
+    <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/arc1.svg">
+</div>
+
 # Private Methods
 
 ## AUTOLOAD($svg, %options)
@@ -164,13 +198,15 @@ Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_
 
 # Index
 
-1 [AUTOLOAD](#autoload) - [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) methods.
+1 [arcPath](#arcpath) - Arc through three points along the circumference of a circle from the first point through the middle point to the last point
 
-2 [gridLines](#gridlines) - Draw a grid.
+2 [AUTOLOAD](#autoload) - [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) methods.
 
-3 [new](#new) - Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) object.
+3 [gridLines](#gridlines) - Draw a grid.
 
-4 [print](#print) - Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) string.
+4 [new](#new) - Create a new [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) object.
+
+5 [print](#print) - Print resulting [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics) string.
 
 # Installation
 
@@ -183,7 +219,7 @@ comprehend, use, modify and install via **cpan**:
 
 [philiprbrenan@gmail.com](mailto:philiprbrenan@gmail.com)
 
-[http://www.appaapps.com](http://www.appaapps.com)
+[http://prb.appaapps.com](http://prb.appaapps.com)
 
 # Copyright
 
