@@ -53,6 +53,16 @@ sub gridLines($$$$)                                                             
     $svg->line(y1=>$c, y2=>$c, x1=>0, x2=>$x, @w);
     $svg->text(@f, x => 0, y => $c, cdata => $i) unless $i == $Y;
    }
+
+  for my $i(1..$X)                                                              # X lines
+   {my $x = $i*$g;
+    for my $j(1..$Y)                                                            # Y lines
+     {my $y = $j*$g;
+      if ($i % 10 == 0 or $j % 10 == 0)
+       {$svg->text(@f, x => $x, y => $y, cdata => "$i.$j");
+       }
+     }
+   }
  }
 
 sub print($%)                                                                   # Print resulting L<svg> string.
@@ -118,7 +128,7 @@ sub AUTOLOAD($%)                                                                
     my $Y = $svg->mY;
     my $w = $options{stroke} ? $options{stroke_width} // $options{"stroke-width"} // 1 : 0;
 
-    my sub option($) {$options{$_[0]} // 0}                                     # Get an option or defualt to zero if not present.  This avoids the problem of validating the SVG parameters which the browser will do more effectively.
+    my sub option($) {$options{$_[0]} // 0}                                     # Get an option or default to zero if not present.  This avoids the problem of validating the SVG parameters which the browser will do more effectively.
 
     if ($n =~ m(\Acircle\Z)i)
      {$X = max $X, $w + option("cx")+option("r");
