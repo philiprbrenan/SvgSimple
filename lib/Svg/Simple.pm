@@ -6,7 +6,7 @@
 # podDocumentation
 package Svg::Simple;
 require v5.34;
-our $VERSION = 20260908;
+our $VERSION = 20260909;
 use warnings FATAL => qw(all);
 use strict;
 use Carp qw(confess);
