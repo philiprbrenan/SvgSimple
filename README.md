@@ -12,21 +12,30 @@ Write [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Gra
 
     my $s = Svg::Simple::new();
 
-    $s->text(x=>10, y=>10,
-      cdata             =>"Hello World",
-      text_anchor       =>"middle",
-      alignment_baseline=>"middle",
-      font_size         => 3.6,
-      font_family       =>"Arial",
-      fill              =>"black");
+    $s->g(id=>"g1", sub=>sub
+     {$s->text(x=>10, y=>10,
+        cdata             =>"Hello World",
+        text_anchor       =>"middle",
+        alignment_baseline=>"middle",
+        font_size         => 3.6,
+        font_family       =>"Arial",
+        fill              =>"black");
 
-    $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
-
+      $s->circle(cx=>10, cy=>10, r=>8, stroke=>"blue", fill=>"transparent", opacity=>0.5);
+     });
     say STDERR $s->print;
 
 <div>
     <img src="https://raw.githubusercontent.com/philiprbrenan/SvgSimple/main/lib/Svg/svg/test.svg">
 </div>
+
+A **-** in an [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
+keyword can be replaced with **\_** to reduce line noise.
+
+A **cdata=**"text"> keyword value pair will placed the text inside an open and closing pair of tags.
+
+A **sub=\\**sub{}> keyword value pair will create an open tag, call the supplied sub and then create a close tag to
+bracket svg statements together,
 
 A **-** in an [Scalar Vector Graphics](https://en.wikipedia.org/wiki/Scalable_Vector_Graphics)
 keyword can be replaced with **\_** to reduce line noise.
@@ -50,12 +59,7 @@ whatever space the browser allocates to the
 If you wish to set these dimensions yourself, call the [print](https://metacpan.org/pod/print) method with
 overriding values as in:
 
-    say STDERR $s->print(width=>2000, height=>1000);
-
-If you wish to inline the generated [html](https://en.wikipedia.org/wiki/HTML)
-you should remove the first two lines of the generated code using a regular
-expression to remove the superfluous [xml](https://en.wikipedia.org/wiki/XML)
-headers.
+    say STDERR $s->print(x=>-100, y=>-100, width=>2000, height=>1000);
 
 # Description
 
