@@ -119,8 +119,8 @@ sub AUTOLOAD($%)                                                                
   for my $k(sort keys %o)                                                                                               # Process each option
    {my $v = $o{$k};
     my $K = $k =~ s(_) (-)r;                                                                                            # Underscore _ in option names becomes hyphen -
-    next if $k =~ m(\Acdata\Z)i;                                                                                        # Skip text as it will be handled directly
-    next if $k =~ m(\Asub\Z)i;                                                                                          # Skip subb as it will be called
+    next if $k =~ m(\Acdata\Z)i;                                                                                        # Skip text keyword  as the text will be placed inline
+    next if $k =~ m(\Asub\Z)i;                                                                                          # Skip sub keyword as the subroutine will be called and its content placed inside this tag
     push @s, qq($K="$v");
    }
 
@@ -152,7 +152,7 @@ sub AUTOLOAD($%)                                                                
     $svg->mX = max $svg->mX, $X;
     $svg->mY = max $svg->mY, $Y;
    };
-  if ($@)                                                                                                               # Failed to evaluate th preceding code
+  if ($@)                                                                                                               # Failed to evaluate the preceding code
    {say STDERR $@;
     exit;
    }
@@ -166,7 +166,7 @@ sub AUTOLOAD($%)                                                                
   if (defined(my $t = $options{cdata}))
    {push $svg->code->@*, ["<$n $p>$t</$n>", $z]                                                                         # Internal text
    }
-  elsif (defined(my $s = $options{sub}))                                                                                # Group or other command tnat brackets statements
+  elsif (defined(my $s = $options{sub}))                                                                                # Group or other command that brackets statements
    {push $svg->code->@*, ["<$n $p>", $z];                                                                               # Opening xml
     &$s($svg);                                                                                                          # Internal xml
     push $svg->code->@*, ["</$n>",   $z]                                                                                # Closing xml
@@ -212,7 +212,7 @@ sub arcPath($$$$$$$$)                                                           
      }
 
     my $p = join " ", @p;                                                                                               # Construct the SVG path string running along the circle circumference from the first point, through the middle point to the last point
-    $p =~ s(\AL) (M)r                                                                                                   # Make the first L an M to ove to the start of the curve
+    $p =~ s(\AL) (M)r                                                                                                   # Move to the start of the curve
    } $x1, $y1, $x2, $y2, $x3, $y3;
  }
 
